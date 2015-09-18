@@ -4,7 +4,7 @@ var React = require('react');
 var Router = require('react-router');
 var beforeData = require('ne-data-before');
 
-var renderServer = function (server, routes, globals, pageAPIPath){
+var renderServer = function (server, routes, pageAPIPath, globals){
 
     server.get('*', function (req, res) {
 
