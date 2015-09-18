@@ -15,5 +15,10 @@
   "bugs": {
     "url": "https://github.com/node-engine/ne-render-server/issues"
   },
-  "homepage": "https://github.com/node-engine/ne-render-server#readme"
+  "homepage": "https://github.com/node-engine/ne-render-server#readme",
+  "dependencies": {
+    "ne-data-before": "^1.0.0",
+    "react": "^0.13.3",
+    "react-router": "^0.13.3"
+  }
 }
