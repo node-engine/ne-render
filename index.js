@@ -4,33 +4,38 @@ var React = require('react');
 var Router = require('react-router');
 var beforeData = require('ne-data-before');
 
-var renderServer = function (server, routes, pageAPIPath, globals){
 
-    server.get('*', function (req, res) {
+var neRender = {
 
-        Router.run(routes, req.path, function (Root, state) {
+    serverRender: function (server, routes, pageAPIPath, globals){
 
-            var pathString = state.routes[1].path.substr(1);
+        server.get('*', function (req, res) {
 
-            function renderPage (data){
-                data.globals = globals;
-                state.data = data;
-                state.query = req.query;
-                console.log('Rendering ' + pathString + 'from Server - START');
-                var html = React.renderToStaticMarkup(React.createElement(Root, state));
-                var doctype = '<!DOCTYPE html>';
-                var fullHtml = doctype + html;
-                res.send(fullHtml);
-                console.log('Rendering ' + pathString + 'from Server - DONE');
-            }
+            Router.run(routes, req.path, function (Root, state) {
 
-            beforeData.fetch(pageAPIPath, pathString)
-                .then(function(data) {
-                renderPage(data);
+                var pathString = state.routes[1].path.substr(1);
+
+                function renderPage (data){
+                    data.globals = globals;
+                    state.data = data;
+                    state.query = req.query;
+                    console.log('Rendering ' + pathString + 'from Server - START');
+                    var html = React.renderToStaticMarkup(React.createElement(Root, state));
+                    var doctype = '<!DOCTYPE html>';
+                    var fullHtml = doctype + html;
+                    res.send(fullHtml);
+                    console.log('Rendering ' + pathString + 'from Server - DONE');
+                }
+
+                beforeData.fetch(pageAPIPath, pathString)
+                    .then(function(data) {
+                        renderPage(data);
+                    });
+
             });
-
         });
-    });
-};
+    }
 
-module.exports = renderServer;
+}
+
+module.exports = neRender;
