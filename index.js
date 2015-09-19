@@ -2,8 +2,7 @@
 
 var React = require('react');
 var Router = require('react-router');
-var beforeData = require('ne-data-before');
-
+var neData = require('ne-data');
 
 var neRender = {
 
@@ -27,7 +26,7 @@ var neRender = {
                     console.log('Rendering ' + pathString + 'from Server - DONE');
                 }
 
-                beforeData.fetch(pageAPIPath, pathString)
+                neData.before(pageAPIPath, pathString)
                     .then(function(data) {
                         renderPage(data);
                     });
