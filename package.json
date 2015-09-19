@@ -1,6 +1,6 @@
 {
-  "name": "ne-render-server",
-  "version": "1.1.0",
+  "name": "ne-render",
+  "version": "1.1.2",
   "description": "A tool to render pages Node Engine style on the server",
   "main": "index.js",
   "scripts": {

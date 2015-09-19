@@ -34,8 +34,11 @@ var neRender = {
 
             });
         });
+    },
+    clientRender: function(){
+        console.log("Future Feature")
     }
 
-}
+};
 
 module.exports = neRender;
