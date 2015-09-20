@@ -157,16 +157,16 @@ var appConfig = {
         },
 
         {
-            path: "/people",
-            title: "People",
-            description: "This is People page",
+            path: "/posts",
+            title: "Posts",
+            description: "This is Posts page",
 
             nedBefore:
             {
                 number: 1,
                 nedb1:
                 {
-                    path: "http://localhost:3001/api/people"
+                    path: "http://localhost:3001/api/posts"
                 }
             }
         },
@@ -177,10 +177,6 @@ var appConfig = {
             description: "This is Something",
 
             nedCustom:
-            {
-                call:  "something"
-            },
-            nedCycle:
             {
                 call:  "something"
             }
