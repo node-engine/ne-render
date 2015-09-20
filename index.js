@@ -6,7 +6,7 @@ var neData = require('ne-data');
 
 var neRender = {
 
-    serverRender: function (server, routes, pageAPIPath, globals){
+    serverRender: function (server, appConfig, routes){
 
         server.get('*', function (req, res) {
 
@@ -14,22 +14,53 @@ var neRender = {
 
                 var pathString = state.routes[1].path.substr(1);
 
+                console.log(pathString);
+
                 function renderPage (data){
-                    data.globals = globals;
+                    state.meta = meta;
                     state.data = data;
                     state.query = req.query;
-                    console.log('Rendering ' + pathString + 'from Server - START');
+                    console.log('Rendering < ' + meta.title + ' > from Server - START');
                     var html = React.renderToStaticMarkup(React.createElement(Root, state));
                     var doctype = '<!DOCTYPE html>';
                     var fullHtml = doctype + html;
                     res.send(fullHtml);
-                    console.log('Rendering ' + pathString + 'from Server - DONE');
+                    console.log('Rendering ' + meta.title + 'from Server - DONE');
                 }
 
-                neData.before(pageAPIPath, pathString)
-                    .then(function(data) {
-                        renderPage(data);
-                    });
+                var meta = neData.meta(req, appConfig);
+
+                if (meta.nedBefore) {
+
+                    if (meta.nedCycle){
+
+                        // this just uses the query params 'limit' and 'batch'
+                        // to change the next and previous button url's and
+                        // to get different sets of data for different values of limit and batch
+                        // the cycle can be on before and after render data
+
+                        neData.cycleBefore(meta)
+                            .then(function(data) {
+                                renderPage(data);
+                            });
+                    }
+
+                    else {
+
+                        neData.before(meta)
+                            .then(function(data) {
+                                renderPage(data);
+                            });
+                    }
+
+                }
+
+                else {
+                    var data = {};
+                    renderPage (data);
+                }
+
+
 
             });
         });
