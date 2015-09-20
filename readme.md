@@ -54,6 +54,7 @@ var server = nodeEngineServer.init(config);
 // Static Assets
 //////////////////////
 
+var express = require('express');
 var path = require('path');
 
 var cacheTime = 100;
@@ -73,14 +74,6 @@ var dirName = __dirname;
 var apiPath = "/api";
 mongoRest.server(server, dirName, apiPath);
 
-
-//////////////////////////////
-// Express Test
-//////////////////////////////
-
-var express = require('express');
-
-server.use('/express', require('./server/express'));
 
 
 ////////////////////////////////////////////////////////////
@@ -270,5 +263,34 @@ class Head extends React.Component {
 }
 
 export default Head;
+
+```
+
+## Sample API file in the apiPath folder 
+
+```js
+
+var router = require('express').Router();
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var mongoRest = require('ne-mongo-rest');
+
+var modelSchema = new Schema({
+    firstName:{type: String, required: true},
+    lastName:{type: String, required: true},
+    email:{type: String, required: true},
+    createdAt:{type: String, required: true, default: new Date()}
+});
+
+var Model = mongoose.model(
+    'people',
+    modelSchema,
+    'people'
+    );
+
+mongoRest.model(router, Model);
+
+module.exports = router;
+
 
 ```
