@@ -14,55 +14,25 @@ Rendering React with React-Router on the server with Pre-Render Data from API's 
 ```js
 
 ////////////////////////
-// Config
-////////////////////////
-
-var configDevelopment = require('../config/config.json');
-var configProduction = require('../config/pm2.json');
-
-var currentEnv = process.env.NODE_ENV || 'development';
-console.log("Current Environment: " + currentEnv);
-
-if ('development' == currentEnv) {
-    var config = configDevelopment;
-    console.log('Using Development CONFIG');
-}
-
-if ('production' == currentEnv) {
-    var config = configProduction;
-    console.log('Using Production CONFIG');
-}
-
-
-////////////////////////
 // Create the Server
 ////////////////////////
 
 var nodeEngineServer = require('ne-server');
+var server = nodeEngineServer.init(process.env.PORT);
 
-var server = nodeEngineServer.init(config);
-
-
-/////////////////////////
-// View Engine Setup
-/////////////////////////
-
-// Optional not necessary
+var mongoose = require('mongoose');
+mongoose.connect(process.env.MONGO_URL);
 
 
 //////////////////////
 // Static Assets
 //////////////////////
 
-var express = require('express');
-var path = require('path');
-
+var dirName = __dirname;
 var cacheTime = 100;
 
-server.use(express.static('media',{ maxAge: cacheTime }));
-server.use(express.static(path.join(__dirname, '/static'),{ maxAge: cacheTime }));
-server.use(express.static(path.join(__dirname, '/universal/css'),{ maxAge: cacheTime }));
-server.use(express.static(path.join(__dirname, '/universal/js'),{ maxAge: cacheTime }));
+nodeEngineServer.static(server, dirName, cacheTime);
+
 
 ///////////////
 // REST API
@@ -70,10 +40,15 @@ server.use(express.static(path.join(__dirname, '/universal/js'),{ maxAge: cacheT
 
 var mongoRest = require('ne-mongo-rest');
 
-var dirName = __dirname;
 var apiPath = "/api";
 mongoRest.server(server, dirName, apiPath);
 
+
+//////////////////////////////
+// Express Test
+//////////////////////////////
+
+server.use('/express', require('./server/express'));
 
 
 ////////////////////////////////////////////////////////////
@@ -81,10 +56,10 @@ mongoRest.server(server, dirName, apiPath);
 ////////////////////////////////////////////////////////////
 
 var neRender = require('ne-render');
-var appConfig = require ('./universal/appConfig');
-var routes = require ('./universal/routes');
+var appmeta = require ('./appmeta');
+var routes = require ('./routes');
 
-neRender.serverRender(server, appConfig, routes);
+neRender.serverRender(server, appmeta, routes);
 
 ```
 
@@ -127,7 +102,7 @@ export default Routes;
 
 ```js
 
-var appConfig = {
+var appmeta = {
 
     globals: {
         "APPNAME": "Node Engine Sample",
@@ -201,7 +176,7 @@ var appConfig = {
 
 };
 
-module.exports = appConfig;
+module.exports = appmeta;
 
 
 ```
