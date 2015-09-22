@@ -6,7 +6,7 @@ var neData = require('ne-data');
 
 var neRender = {
 
-    serverRender: function (server, appConfig, routes){
+    serverRender: function (server, appmeta, routes){
 
         server.get('*', function (req, res) {
 
@@ -28,7 +28,7 @@ var neRender = {
                     console.log('Rendering ' + meta.title + 'from Server - DONE');
                 }
 
-                var meta = neData.meta(req, appConfig);
+                var meta = neData.meta(req, appmeta);
 
                 if (meta.nedBefore) {
 
