@@ -14,8 +14,8 @@ var neRender = {
 
                 // Log pathString
                 console.log(state.routes[1].path.substr(1));
-                var neDataReqTimeoutTime = appmeta.config.neDataReqTimeoutTime || 6000;
-                var neDataReqTimeoutMessage = appmeta.config.neDataReqTimeoutMessage || "neDataReq Not Authorized";
+                var neDataReqTimeoutTime = process.env.NEDATA_TIMEOUT_TIME || 6000;
+                var neDataReqTimeoutMessage = process.env.NEDATA_TIMEOUT_MSG || "neDataReq Not Authorized";
 
                 // Compile page meta
                 var meta = neData.meta(req, appmeta);
