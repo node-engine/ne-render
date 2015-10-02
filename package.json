@@ -1,6 +1,6 @@
 {
   "name": "ne-render",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Rendering React with React-Router on the server with Pre-Render Data from API's added to the state and props",
   "main": "index.js",
   "scripts": {

@@ -38,6 +38,8 @@ var neRender = {
                     state.meta = meta;
                     state.data = data;
                     state.query = req.query;
+                    state.body = req.body;
+                    state.session = req.session;
                     if (!fetchError) {
                         stopTimeout();
                         state.data = data;
