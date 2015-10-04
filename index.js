@@ -21,8 +21,7 @@ var neRender = {
                 var meta = neData.meta(req, appmeta);
                 meta.query = req.query;
                 meta.params = state.params;
-
-
+                meta.body = req.body;
 
                 // Render the page
                 function renderPage (data, fetchError){
