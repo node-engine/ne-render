@@ -25,6 +25,11 @@ var neRender = {
                 if (req.claims){
                     meta.claims = req.claims;
                 }
+                if (!req.claims){
+                    meta.claims = {
+                        displayName: "Not Logged In"
+                    };
+                }
                 if (req.cookies && req.cookies.token){
                     meta.token = req.cookies.token;
                 }
@@ -50,7 +55,6 @@ var neRender = {
                     state.data = data;
                     state.query = req.query;
                     state.body = req.body;
-                    state.session = req.session;
                     if (!fetchError) {
                         stopTimeout();
                         state.data = data;
