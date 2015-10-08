@@ -13,12 +13,14 @@ var neRender = {
             Router.run(routes, req.path, function (Root, state) {
 
                 // Log pathString
-                console.log(state.routes[1].path.substr(1));
+                var pathForMeta = state.routes[1].path;
+                console.log('pathForMeta');
+                console.log(pathForMeta);
                 var neDataReqTimeoutTime = process.env.NEDATA_TIMEOUT_TIME || 6000;
                 var neDataReqTimeoutMessage = process.env.NEDATA_TIMEOUT_MSG || "neDataReq Not Authorized";
 
                 // Compile page meta
-                var meta = neData.meta(req, appmeta);
+                var meta = neData.meta(req, appmeta, pathForMeta);
                 meta.query = req.query;
                 meta.params = state.params;
                 meta.body = req.body;
