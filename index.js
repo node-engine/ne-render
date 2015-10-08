@@ -22,6 +22,18 @@ var neRender = {
                 meta.query = req.query;
                 meta.params = state.params;
                 meta.body = req.body;
+                if (req.claims){
+                    meta.claims = req.claims;
+                }
+                if (req.cookies && req.cookies.token){
+                    meta.token = req.cookies.token;
+                }
+                if (req.query && req.query.token){
+                    meta.token = req.query.token;
+                }
+
+                console.log('ne-render: meta before ne-data');
+                console.log(meta);
 
                 // Render the page
                 function renderPage (data, fetchError){
@@ -46,12 +58,16 @@ var neRender = {
                     if (req.user) {
                         state.user = req.user;
                     }
+
+                    console.log('ne-render: state before render');
+                    console.log(state);
+
                     console.log('Rendering < ' + meta.title + ' > from Server - START');
                     var html = React.renderToStaticMarkup(React.createElement(Root, state));
                     var doctype = '<!DOCTYPE html>';
                     var fullHtml = doctype + html;
                     res.send(fullHtml);
-                    console.log('Rendering ' + meta.title + 'from Server - DONE');
+                    console.log('Rendering < ' + meta.title + ' > from Server - DONE');
 
                 }
 
