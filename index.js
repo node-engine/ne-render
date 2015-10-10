@@ -2,11 +2,218 @@
 
 var React = require('react');
 var Router = require('react-router');
-var neData = require('ne-data');
+var axios = require ('axios');
+var _ = require('lodash');
 
 var neRender = {
 
-    serverRender: function (server, appmeta, routes){
+    meta: function (req, appmeta, pathForMeta){
+
+        var path = pathForMeta;
+
+        console.log('');
+        console.log('');
+        console.log('ne-data: pathForMeta');
+        console.log(pathForMeta);
+        console.log('');
+        console.log('');
+
+        var meta = _.find(appmeta, { path: path });
+
+        if (meta === undefined){
+
+            var meta = {
+                path: "path not in config",
+                meta:
+                {
+                    title: "Undefined path: " + req.path,
+                    description: "Not found"
+                }
+            };
+
+            meta.appname = process.env.APPNAME;
+
+            console.log('');
+            console.log('');
+            console.log('ne-data: meta default set');
+            console.log(meta);
+            console.log('');
+            console.log('');
+
+            return meta
+        }
+
+        meta.appname = process.env.APPNAME;
+
+        console.log('');
+        console.log('');
+        console.log('ne-data: meta init');
+        console.log(meta);
+        console.log('');
+        console.log('');
+
+        if (meta.neDataCustom){
+
+            var meta = appmeta.custom(meta, req);
+
+            console.log('');
+            console.log('');
+            console.log('ne-data: meta with custom');
+            console.log(meta);
+            console.log('');
+            console.log('');
+
+            return meta
+
+        }
+
+        else {
+
+            return meta;
+
+            // this.sendMeta(routeMeta);
+
+
+        }
+
+    },
+
+    before: function(meta){
+        var self = this;
+
+        var nedbNumber = meta.neDataBefore;
+
+        if (nedbNumber === 1) {
+
+            console.log('');
+            console.log('');
+            console.log("ne-data: Requesting < " + nedbNumber + " nedb packets > for < " + meta.title +" >");
+            console.log('');
+            console.log('');
+
+            var nedb1 = meta.nedb1;
+            // meta.nedb1.func();
+
+            return axios.all([self.getBefore(nedb1, meta)])
+                .then(function(results){
+                    return {
+                        nedb1: results[0].data
+                    }
+                });
+        }
+
+        else if (nedbNumber === 2) {
+
+            console.log('');
+            console.log('');
+            console.log("ne-data: Requesting < " + nedbNumber + " nedb packets > for < " + meta.title +" >");
+            console.log('');
+            console.log('');
+
+            var nedb1 = meta.nedb1;
+            var nedb2 = meta.nedb2;
+            return axios.all([self.getBefore(nedb1, meta),self.getBefore(nedb2, meta)])
+                .then(function(results){
+                    return {
+                        nedb1: results[0].data,
+                        nedb2: results[1].data
+                    }
+                });
+        }
+
+        else if (nedbNumber === 3) {
+
+            console.log('');
+            console.log('');
+            console.log("ne-data: Requesting < " + nedbNumber + " nedb packets > for < " + meta.title +" >");
+            console.log('');
+            console.log('');
+
+            var nedb1 = meta.nedb1;
+            var nedb2 = meta.nedb2;
+            var nedb3 = meta.nedb3;
+            return axios.all([self.getBefore(nedb1, meta),self.getBefore(nedb2, meta),self.getBefore(nedb3, meta)])
+                .then(function(results){
+                    return {
+                        nedb1: results[0].data,
+                        nedb2: results[1].data,
+                        nedb3: results[2].data
+                    }
+                });
+        }
+
+        else if (nedbNumber > 3)  {
+
+            console.log('');
+            console.log('');
+            console.log("ne-data: The page had" + nedbNumber + "pre render data requests" );
+            console.log("Only a maximun of 3 pre render data requests are supported");
+            console.log("If you need more it can be added on request by opening an issue on github");
+            console.log('');
+            console.log('');
+
+            return {
+                errorMessage: "dataNumber did not match",
+                dataNumber: nedbNumber
+            }
+        }
+        else {
+
+            console.log('');
+            console.log('');
+            console.log("ne-data: nedbNumber Error");
+            console.log("The page had" + nedbNumber + "pre render data requests" );
+            console.log("Only a maximun of 3 pre render data requests are supported");
+            console.log("If you need more it can be added on request by opening an issue on github");
+            console.log('');
+            console.log('');
+
+            return {
+                errorMessage: "pdNumber error",
+                pdNumber: nedbNumber
+            }
+        }
+    },
+
+    getBefore: function(nedbx, meta) {
+        if(nedbx.pathFunction){
+            var path = nedbx.pathFunction(meta);
+        }
+        else {
+            var path = nedbx.path;
+            var query = nedbx-query;
+        }
+
+        console.log('');
+        console.log('');
+        console.log('ne-data: path');
+        console.log(path);
+        console.log('');
+        console.log('');
+
+        return axios.get(path);
+
+    },
+
+    cycleBefore: function(){
+
+    },
+
+    after: function(){
+
+        console.log('');
+        console.log('');
+        console.log("ne-data: Future feature for getting data after the page has rendered already and updating the page")
+        console.log('');
+        console.log('');
+    },
+
+    cycleAfter: function(){
+
+    },
+
+    serverRender: function (server, appmeta, routes, apiref){
+        var self = this;
 
         server.get('*', function (req, res) {
 
@@ -26,7 +233,7 @@ var neRender = {
                 var neDataReqTimeoutMessage = process.env.NEDATA_TIMEOUT_MSG || "neDataReq Not Authorized";
 
                 // Compile page meta
-                var meta = neData.meta(req, appmeta, pathForMeta);
+                var meta = self.meta(req, appmeta, pathForMeta);
                 meta.query = req.query;
                 meta.params = state.params;
                 meta.body = req.body;
@@ -67,6 +274,7 @@ var neRender = {
                     state.data = data;
                     state.query = req.query;
                     state.body = req.body;
+                    state.apiref = apiref;
                     if (!fetchError) {
                         stopTimeout();
                         state.data = data;
@@ -127,7 +335,7 @@ var neRender = {
                         // to change the next and previous button url's and
                         // to get different sets of data for different values of limit and batch
                         // the cycle can be on before and after render data
-                        neData.cycleBefore(meta)
+                        self.cycleBefore(meta)
                             .then(function(data) {
                                 renderPage(data);
                             });
@@ -135,7 +343,7 @@ var neRender = {
 
                     else {
 
-                        neData.before(meta)
+                        self.before(meta)
                             .then(function(data) {
                                 renderPage(data);
                             });
