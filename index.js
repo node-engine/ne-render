@@ -14,8 +14,14 @@ var neRender = {
 
                 // Log pathString
                 var pathForMeta = state.routes[1].path;
-                console.log('pathForMeta');
+
+                console.log('');
+                console.log('');
+                console.log('neRender: pathForMeta');
                 console.log(pathForMeta);
+                console.log('');
+                console.log('');
+
                 var neDataReqTimeoutTime = process.env.NEDATA_TIMEOUT_TIME || 6000;
                 var neDataReqTimeoutMessage = process.env.NEDATA_TIMEOUT_MSG || "neDataReq Not Authorized";
 
@@ -39,8 +45,12 @@ var neRender = {
                     meta.token = req.query.token;
                 }
 
+                console.log('');
+                console.log('');
                 console.log('ne-render: meta before ne-data');
                 console.log(meta);
+                console.log('');
+                console.log('');
 
                 // Render the page
                 function renderPage (data, fetchError){
@@ -65,15 +75,29 @@ var neRender = {
                         state.user = req.user;
                     }
 
+                    console.log('');
+                    console.log('');
                     console.log('ne-render: state before render');
                     console.log(state);
+                    console.log('');
+                    console.log('');
 
-                    console.log('Rendering < ' + meta.title + ' > from Server - START');
+                    console.log('');
+                    console.log('');
+                    console.log('ne-render: Rendering < ' + meta.title + ' > from Server - START');
+                    console.log('');
+                    console.log('');
+
                     var html = React.renderToStaticMarkup(React.createElement(Root, state));
                     var doctype = '<!DOCTYPE html>';
                     var fullHtml = doctype + html;
                     res.send(fullHtml);
-                    console.log('Rendering < ' + meta.title + ' > from Server - DONE');
+
+                    console.log('');
+                    console.log('');
+                    console.log('ne-render: Rendering < ' + meta.title + ' > from Server - DONE');
+                    console.log('');
+                    console.log('');
 
                 }
 
@@ -130,7 +154,7 @@ var neRender = {
         });
     },
     clientRender: function(){
-        console.log("Future Feature")
+        console.log("ne-render: Future Feature")
     }
 
 };
