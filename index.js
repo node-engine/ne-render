@@ -79,74 +79,144 @@ var neRender = {
     },
 
     before: function(meta){
+
         var self = this;
 
-        var nedbNumber = meta.neDataBefore;
+        console.log('');
+        console.log('');
+        console.log('neRender before: meta');
+        console.log(meta);
+        console.log('');
+        console.log('');
+        // var nedbNumber = meta.neDataBefore;
 
-        if (nedbNumber === 1) {
+        console.log('');
+        console.log('');
+        console.log('neRender before: meta.nerbArray.length');
+        console.log(meta.nerbArray.length);
+        console.log('');
+        console.log('');
+
+
+        var nerbPackets = meta.nerbArray.length;
+
+        if (nerbPackets == 1) {
 
             console.log('');
             console.log('');
-            console.log("ne-data: Requesting < " + nedbNumber + " nedb packets > for < " + meta.title +" >");
+            console.log('neRender before: meta.nerbArray[0]');
+            console.log(meta.nerbArray[0]);
             console.log('');
             console.log('');
 
-            var nedb1 = meta.nedb1;
+
+            console.log('');
+            console.log('');
+            console.log("ne-data: Requesting < " + nerbPackets + " nedb packets > for < " + meta.title + " >");
+            console.log('');
+            console.log('');
+
+
+            var nedb1 = meta.nerbArray[0];
             // meta.nedb1.func();
 
             return axios.all([self.getBefore(nedb1, meta)])
                 .then(function(results){
-                    return {
-                        nedb1: results[0].data
-                    }
+                    var resultsObject = {};
+                    var nerbResults = results.map(function (element, index){
+                        var result = {};
+
+                        console.log("ne-data before: meta.nerbArray[index].nerbName");
+                        console.log(meta.nerbArray[index].nerbName);
+
+                        return resultsObject[meta.nerbArray[index].nerbName] = element.data;
+                    });
+
+                    console.log('');
+                    console.log('');
+                    console.log("resultsObject");
+                    console.log(resultsObject);
+                    console.log('');
+                    console.log('');
+
+                    return resultsObject
                 });
         }
 
-        else if (nedbNumber === 2) {
+        else if (nerbPackets == 2) {
 
             console.log('');
             console.log('');
-            console.log("ne-data: Requesting < " + nedbNumber + " nedb packets > for < " + meta.title +" >");
+            console.log("ne-data: Requesting < " + nerbPackets + " nedb packets > for < " + meta.title +" >");
             console.log('');
             console.log('');
 
-            var nedb1 = meta.nedb1;
-            var nedb2 = meta.nedb2;
+            var nedb1 = meta.nerbArray[0];
+            var nedb2 = meta.nerbArray[1];
+
             return axios.all([self.getBefore(nedb1, meta),self.getBefore(nedb2, meta)])
                 .then(function(results){
-                    return {
-                        nedb1: results[0].data,
-                        nedb2: results[1].data
-                    }
+                    var resultsObject = {};
+                    var nerbResults = results.map(function (element, index){
+                        var result = {};
+
+                        console.log("ne-data before: meta.nerbArray[index].nerbName");
+                        console.log(meta.nerbArray[index].nerbName);
+
+                        return resultsObject[meta.nerbArray[index].nerbName] = element.data;
+                    });
+
+                    console.log('');
+                    console.log('');
+                    console.log("resultsObject");
+                    console.log(resultsObject);
+                    console.log('');
+                    console.log('');
+
+                    return resultsObject
                 });
         }
 
-        else if (nedbNumber === 3) {
+        else if (nerbPackets == 3) {
 
             console.log('');
             console.log('');
-            console.log("ne-data: Requesting < " + nedbNumber + " nedb packets > for < " + meta.title +" >");
+            console.log("ne-data: Requesting < " + nerbPackets + " nedb packets > for < " + meta.title +" >");
             console.log('');
             console.log('');
 
-            var nedb1 = meta.nedb1;
-            var nedb2 = meta.nedb2;
-            var nedb3 = meta.nedb3;
+            var nedb1 = meta.nerbArray[0];
+            var nedb2 = meta.nerbArray[1];
+            var nedb3 = meta.nerbArray[2];
+
             return axios.all([self.getBefore(nedb1, meta),self.getBefore(nedb2, meta),self.getBefore(nedb3, meta)])
                 .then(function(results){
-                    return {
-                        nedb1: results[0].data,
-                        nedb2: results[1].data,
-                        nedb3: results[2].data
-                    }
+                    var resultsObject = {};
+                    var nerbResults = results.map(function (element, index){
+                        var result = {};
+
+                        console.log("ne-data before: meta.nerbArray[index].nerbName");
+                        console.log(meta.nerbArray[index].nerbName);
+
+                        return resultsObject[meta.nerbArray[index].nerbName] = element.data;
+                    });
+
+                    console.log('');
+                    console.log('');
+                    console.log("resultsObject");
+                    console.log(resultsObject);
+                    console.log('');
+                    console.log('');
+
+                    return resultsObject
                 });
         }
 
-        else if (nedbNumber > 3)  {
+        else if (nerbPackets > 3)  {
 
             console.log('');
             console.log('');
-            console.log("ne-data: The page had" + nedbNumber + "pre render data requests" );
+            console.log("ne-data: The page had" + nerbPackets + "pre render data requests" );
             console.log("Only a maximun of 3 pre render data requests are supported");
             console.log("If you need more it can be added on request by opening an issue on github");
             console.log('');
@@ -154,7 +224,7 @@ var neRender = {
 
             return {
                 errorMessage: "dataNumber did not match",
-                dataNumber: nedbNumber
+                dataNumber: nerbPackets
             }
         }
         else {
@@ -162,7 +232,7 @@ var neRender = {
             console.log('');
             console.log('');
             console.log("ne-data: nedbNumber Error");
-            console.log("The page had" + nedbNumber + "pre render data requests" );
+            console.log("The page had" + nerbPackets + "pre render data requests" );
             console.log("Only a maximun of 3 pre render data requests are supported");
             console.log("If you need more it can be added on request by opening an issue on github");
             console.log('');
@@ -170,7 +240,7 @@ var neRender = {
 
             return {
                 errorMessage: "pdNumber error",
-                pdNumber: nedbNumber
+                pdNumber: nerbPackets
             }
         }
     },
@@ -326,8 +396,9 @@ var neRender = {
 
 
 
+
                 // Handle neData Requests
-                if (meta.neDataBefore) {
+                if (meta.nerbArray) {
 
                     if (meta.neDataCycle){
 
@@ -361,6 +432,7 @@ var neRender = {
             });
         });
     },
+
     clientRender: function(server, path, routes){
         console.log("ne-render: Future Feature")
 
