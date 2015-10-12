@@ -361,8 +361,37 @@ var neRender = {
             });
         });
     },
-    clientRender: function(){
+    clientRender: function(server, path, routes){
         console.log("ne-render: Future Feature")
+
+        Router.run(routes, path, function(Root, state){
+
+            //var pathString = state.routes[1].path.substr(1);
+            var pathString = "about";
+
+            function renderPage (data){
+                state.data = data;
+                state.meta = {};
+
+                console.log('');
+                console.log('');
+                console.log("Rendering < " + pathString + " > from CLIENT - START");
+                console.log('');
+                console.log('');
+
+                React.render(React.createElement(Root, state), document.getElementById("react-mount"));
+
+                console.log('');
+                console.log('');
+                console.log("Rendering < " + pathString + " > from CLIENT - START");
+                console.log('');
+                console.log('');
+            }
+
+            var data = {}
+            renderPage(data)
+        })
+
     }
 
 };
