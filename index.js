@@ -282,7 +282,7 @@ var neRender = {
 
     },
 
-    serverRender: function (server, appmeta, routes, apiref){
+    serverRender: function (server, appmeta, routes, dataRef){
         var self = this;
 
         server.get('*', function (req, res) {
@@ -344,7 +344,7 @@ var neRender = {
                     state.data = data;
                     state.query = req.query;
                     state.body = req.body;
-                    state.apiref = apiref;
+                    state.dataRef = dataRef;
                     if (!fetchError) {
                         stopTimeout();
                         state.data = data;
