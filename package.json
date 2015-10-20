@@ -19,6 +19,7 @@
   "dependencies": {
     "axios": "^0.7.0",
     "lodash": "^3.10.1",
+    "ne-auto-off": "^1.0.0",
     "react": "^0.13.3",
     "react-router": "^0.13.3"
   }
