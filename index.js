@@ -1,9 +1,17 @@
 'use strict';
 
-var React = require('react');
-var Router = require('react-router');
-var axios = require ('axios');
-var _ = require('lodash');
+if (process.env.NE_AUTO) {
+    var React = require(process.env.NE_AUTO).react;
+    var Router = require(process.env.NE_AUTO).reactRouter;
+    var axios = require (process.env.NE_AUTO).axios;
+    var _ = require(process.env.NE_AUTO).lodash;
+}
+else {
+    var React = require('react');
+    var Router = require('react-router');
+    var axios = require ('axios');
+    var _ = require('lodash');
+}
 
 var neRender = {
 
