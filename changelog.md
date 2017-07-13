@@ -22,6 +22,19 @@ Dependencies
 - DU Update Dependency: A dependency is updated in the package
 
 
+## 1.9.0
+
+[DR] Disabled ne-data old implimentation.
+
+## 1.8.3
+
+Release date: NOT Released
+
+[CO] Removed state before render console log
+[CO] Added a notification log if there could possibly be a error in the handler being rendered
+[FN] Added routes to skip the ne-render for *.css and *.js files.
+
+
 ## 1.8.2
 
 Release date: 20151021

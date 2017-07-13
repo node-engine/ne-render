@@ -78,212 +78,18 @@ var neRender = {
 
     },
 
-    before: function(meta){
-
+    serverRender: function (server, appmeta, routes){
         var self = this;
 
-        console.log('');
-        console.log('');
-        console.log('neRender before: meta');
-        console.log(meta);
-        console.log('');
-        console.log('');
-        // var nedbNumber = meta.neDataBefore;
+        server.get('*.js', function (req, res) {
+            console.log("ne-render: *.js skipped on purpose")
+            res.end();
+        });
 
-        console.log('');
-        console.log('');
-        console.log('neRender before: meta.nerbArray.length');
-        console.log(meta.nerbArray.length);
-        console.log('');
-        console.log('');
-
-
-        var nerbPackets = meta.nerbArray.length;
-
-        if (nerbPackets == 1) {
-
-            console.log('');
-            console.log('');
-            console.log('neRender before: meta.nerbArray[0]');
-            console.log(meta.nerbArray[0]);
-            console.log('');
-            console.log('');
-
-
-            console.log('');
-            console.log('');
-            console.log("ne-data: Requesting < " + nerbPackets + " nedb packets > for < " + meta.title + " >");
-            console.log('');
-            console.log('');
-
-
-            var nedb1 = meta.nerbArray[0];
-            // meta.nedb1.func();
-
-            return axios.all([self.getBefore(nedb1, meta)])
-                .then(function(results){
-                    var resultsObject = {};
-                    var nerbResults = results.map(function (element, index){
-                        var result = {};
-
-                        console.log("ne-data before: meta.nerbArray[index].nerbName");
-                        console.log(meta.nerbArray[index].nerbName);
-
-                        return resultsObject[meta.nerbArray[index].nerbName] = element.data;
-                    });
-
-                    console.log('');
-                    console.log('');
-                    console.log("resultsObject");
-                    console.log(resultsObject);
-                    console.log('');
-                    console.log('');
-
-                    return resultsObject
-                });
-        }
-
-        else if (nerbPackets == 2) {
-
-            console.log('');
-            console.log('');
-            console.log("ne-data: Requesting < " + nerbPackets + " nedb packets > for < " + meta.title +" >");
-            console.log('');
-            console.log('');
-
-            var nedb1 = meta.nerbArray[0];
-            var nedb2 = meta.nerbArray[1];
-
-            return axios.all([self.getBefore(nedb1, meta),self.getBefore(nedb2, meta)])
-                .then(function(results){
-                    var resultsObject = {};
-                    var nerbResults = results.map(function (element, index){
-                        var result = {};
-
-                        console.log("ne-data before: meta.nerbArray[index].nerbName");
-                        console.log(meta.nerbArray[index].nerbName);
-
-                        return resultsObject[meta.nerbArray[index].nerbName] = element.data;
-                    });
-
-                    console.log('');
-                    console.log('');
-                    console.log("resultsObject");
-                    console.log(resultsObject);
-                    console.log('');
-                    console.log('');
-
-                    return resultsObject
-                });
-        }
-
-        else if (nerbPackets == 3) {
-
-            console.log('');
-            console.log('');
-            console.log("ne-data: Requesting < " + nerbPackets + " nedb packets > for < " + meta.title +" >");
-            console.log('');
-            console.log('');
-
-            var nedb1 = meta.nerbArray[0];
-            var nedb2 = meta.nerbArray[1];
-            var nedb3 = meta.nerbArray[2];
-
-            return axios.all([self.getBefore(nedb1, meta),self.getBefore(nedb2, meta),self.getBefore(nedb3, meta)])
-                .then(function(results){
-                    var resultsObject = {};
-                    var nerbResults = results.map(function (element, index){
-                        var result = {};
-
-                        console.log("ne-data before: meta.nerbArray[index].nerbName");
-                        console.log(meta.nerbArray[index].nerbName);
-
-                        return resultsObject[meta.nerbArray[index].nerbName] = element.data;
-                    });
-
-                    console.log('');
-                    console.log('');
-                    console.log("resultsObject");
-                    console.log(resultsObject);
-                    console.log('');
-                    console.log('');
-
-                    return resultsObject
-                });
-        }
-
-        else if (nerbPackets > 3)  {
-
-            console.log('');
-            console.log('');
-            console.log("ne-data: The page had" + nerbPackets + "pre render data requests" );
-            console.log("Only a maximun of 3 pre render data requests are supported");
-            console.log("If you need more it can be added on request by opening an issue on github");
-            console.log('');
-            console.log('');
-
-            return {
-                errorMessage: "dataNumber did not match",
-                dataNumber: nerbPackets
-            }
-        }
-        else {
-
-            console.log('');
-            console.log('');
-            console.log("ne-data: nedbNumber Error");
-            console.log("The page had" + nerbPackets + "pre render data requests" );
-            console.log("Only a maximun of 3 pre render data requests are supported");
-            console.log("If you need more it can be added on request by opening an issue on github");
-            console.log('');
-            console.log('');
-
-            return {
-                errorMessage: "pdNumber error",
-                pdNumber: nerbPackets
-            }
-        }
-    },
-
-    getBefore: function(nedbx, meta) {
-        if(nedbx.pathFunction){
-            var path = nedbx.pathFunction(meta);
-        }
-        else {
-            var path = nedbx.path;
-            var query = nedbx-query;
-        }
-
-        console.log('');
-        console.log('');
-        console.log('ne-data: path');
-        console.log(path);
-        console.log('');
-        console.log('');
-
-        return axios.get(path);
-
-    },
-
-    cycleBefore: function(){
-
-    },
-
-    after: function(){
-
-        console.log('');
-        console.log('');
-        console.log("ne-data: Future feature for getting data after the page has rendered already and updating the page")
-        console.log('');
-        console.log('');
-    },
-
-    cycleAfter: function(){
-
-    },
-
-    serverRender: function (server, appmeta, routes, dataRef){
-        var self = this;
+        server.get('*.css', function (req, res) {
+            console.log("ne-render: *.css skipped on purpose")
+            res.end();
+        });
 
         server.get('*', function (req, res) {
 
@@ -298,9 +104,6 @@ var neRender = {
                 console.log(pathForMeta);
                 console.log('');
                 console.log('');
-
-                var neDataReqTimeoutTime = process.env.NEDATA_TIMEOUT_TIME || 6000;
-                var neDataReqTimeoutMessage = process.env.NEDATA_TIMEOUT_MSG || "neDataReq Not Authorized";
 
                 // Compile page meta
                 var meta = self.meta(req, appmeta, pathForMeta);
@@ -330,39 +133,29 @@ var neRender = {
                 console.log('');
 
                 // Render the page
-                function renderPage (data, fetchError){
+                function renderPage (data){
 
-                    if (!fetchError) {
-                        stopTimeout();
-                    }
-                    if (fetchError) {
-                        data = {
-                            message: neDataReqTimeoutMessage
-                        };
-                    }
                     state.meta = meta;
                     state.data = data;
                     state.query = req.query;
                     state.body = req.body;
-                    state.dataRef = dataRef;
-                    if (!fetchError) {
-                        stopTimeout();
-                        state.data = data;
-                    }
                     if (req.user) {
                         state.user = req.user;
                     }
 
                     console.log('');
                     console.log('');
-                    console.log('ne-render: state before render');
-                    console.log(state);
+                    console.log('ne-render: Rendering < ' + meta.title + ' > from Server - START');
                     console.log('');
                     console.log('');
 
                     console.log('');
                     console.log('');
-                    console.log('ne-render: Rendering < ' + meta.title + ' > from Server - START');
+                    console.log('ne-render: If your app is hanging after this log');
+                    console.log('There is probably something wrong with the handler that is being rendered');
+                    console.log('Could be a variable that can not be found');
+                    console.log('Could be a syntax error');
+                    console.log('Or something else');
                     console.log('');
                     console.log('');
 
@@ -379,93 +172,16 @@ var neRender = {
 
                 }
 
+                var data = {};
 
-                // Handle errors with neData requests
-                var timeOut;
-                var startTimeout = function  (){
-                    timeOut = setTimeout(function(){
-                        var data = {};
-                        var fetchError = {};
-                        renderPage(data, fetchError);
-                    },neDataReqTimeoutTime);
-                };
-                var stopTimeout = function (){
-                    clearTimeout(timeOut);
-                };
-                startTimeout ();
+                renderPage (data);
 
-
-
-
-                // Handle neData Requests
-                if (meta.nerbArray) {
-
-                    if (meta.neDataCycle){
-
-                        // this just uses the query params 'limit' and 'batch'
-                        // to change the next and previous button url's and
-                        // to get different sets of data for different values of limit and batch
-                        // the cycle can be on before and after render data
-                        self.cycleBefore(meta)
-                            .then(function(data) {
-                                renderPage(data);
-                            });
-                    }
-
-                    else {
-
-                        self.before(meta)
-                            .then(function(data) {
-                                renderPage(data);
-                            });
-                    }
-
-                }
-
-                else {
-                    var data = {};
-                    renderPage (data);
-                }
 
 
 
             });
         });
-    },
-
-    clientRender: function(server, path, routes){
-        console.log("ne-render: Future Feature")
-
-        Router.run(routes, path, function(Root, state){
-
-            //var pathString = state.routes[1].path.substr(1);
-            var pathString = "about";
-
-            function renderPage (data){
-                state.data = data;
-                state.meta = {};
-
-                console.log('');
-                console.log('');
-                console.log("Rendering < " + pathString + " > from CLIENT - START");
-                console.log('');
-                console.log('');
-
-                React.render(React.createElement(Root, state), document.getElementById("react-mount"));
-
-                console.log('');
-                console.log('');
-                console.log("Rendering < " + pathString + " > from CLIENT - START");
-                console.log('');
-                console.log('');
-            }
-
-            var data = {}
-            renderPage(data)
-        })
-
     }
-
 };
 
 module.exports = neRender;
